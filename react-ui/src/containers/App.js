@@ -43,7 +43,6 @@ const particlesParams = {
 }
 
 const initialState = {
-  // SERVER_URL: 'https://smart-brain-serv.herokuapp.com/',
   input: '',
   inputUrl: '',
   boxes: [],
@@ -97,7 +96,7 @@ class App extends React.Component {
 
   onSubmit = (event) => {
     this.setState({inputUrl: this.state.input})
-    fetch(String.prototype.concat(process.env.REACT_APP_SERVER_URL, 'imageurl'), {
+    fetch('https://smart-brain-full.herokuapp.com/api/imageurl', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -106,7 +105,7 @@ class App extends React.Component {
     })
     .then(response => response.json())
     .then(response => {
-      fetch(String.prototype.concat(process.env.REACT_APP_SERVER_URL, 'image'), {
+      fetch('https://smart-brain-full.herokuapp.com/api/image', {
         method: 'put',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
