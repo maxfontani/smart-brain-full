@@ -23,7 +23,7 @@ class Signin extends React.Component {
         if (!this.state.signInPass || !this.state.signInLogin) {
             alert('Please enter your Login and Password.')
         } else {
-            fetch('https://smart-brain-full.herokuapp.com/api/signin'), {
+            fetch('https://smart-brain-full.herokuapp.com/api/signin', {
                 method: 'post',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
