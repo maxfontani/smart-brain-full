@@ -1,12 +1,12 @@
-import express from 'express'
-import bodyParser from 'body-parser'
-import bcrypt from 'bcryptjs'
-import cors from 'cors'
-import knex from 'knex'
-import handleRegister from './controllers/register.js'
-import handleSignin from './controllers/signin.js'
-import handleProfile from './controllers/profile.js'
-import image from './controllers/image.js'
+const express = require('express')
+const bodyParser = require('body-parser')
+const bcrypt = require('bcryptjs')
+const cors = require('cors')
+const knex = require( 'knex')
+const handleRegister = require('./controllers/register.js')
+const handleSignin = require('./controllers/signin.js')
+const handleProfile = require('./controllers/profile.js')
+const image = require('./controllers/image.js')
 
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
 
