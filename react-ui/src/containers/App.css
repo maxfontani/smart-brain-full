@@ -1,0 +1,78 @@
+.App {
+  text-align: center;
+}
+
+nav {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+#input-image {
+  max-width: 700px;
+  height: 500px;
+}
+
+.logo {
+  max-height: 70%;
+  scale: 90%;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.Tilt {
+  cursor: pointer;
+}
+
+.particles {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.bounding-box {
+  position: absolute;
+  box-shadow: 0 0 0 3px #12ad0d inset;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.input-url {
+  opacity: 0.5;
+  transition: opacity .25s ease-out;
+}
+
+.input-url:hover,
+.input-url:focus {
+  opacity: .85;
+  transition: opacity .15s ease-out;
+}
+.input-url:active {
+  opacity: .95; 
+  transition: opacity .35s ease-in;
+}
+
+.scroller {
+  scrollbar-color: dark;
+}
+
+.form {
+  background: linear-gradient(90deg, rgba(41,13,124,1) 0%, rgba(101,21,119,1) 100%);
+}
+
+input:invalid {
+  box-shadow: none;
+}
