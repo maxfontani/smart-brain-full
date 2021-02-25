@@ -37,7 +37,7 @@ class Register extends React.Component {
             if (!this.emailCheck(this.state.newEmail)) {
                 alert('Invalid e-mail address.')
             } else {
-                fetch('https://smart-brain-full.herokuapp.com/api/register'), {
+                fetch('https://smart-brain-full.herokuapp.com/api/register', {
                     method: 'post',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
@@ -45,8 +45,7 @@ class Register extends React.Component {
                         password: this.state.newPass,
                         login: this.state.newLogin
                     })
-                })
-                .then(response => response.json())
+                }).then(response => response.json())
                 .then(user => {
                     if (user.login) {
                         this.props.loadUser(user)
