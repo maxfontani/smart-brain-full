@@ -12,7 +12,7 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 1
 
 const app = express()
 const db = knex({
@@ -25,8 +25,8 @@ const db = knex({
 
 app.use(cors())
 app.options('*', cors())
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.urlencoded({extended: true})); 
+app.use(express.json());   
 
 
 app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
