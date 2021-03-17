@@ -1,0 +1,19 @@
+
+#bd-input:invalid {
+    /* content: '✖'; */
+    background: rgba(139, 0, 0, 0.685)
+}
+
+#bd-input {
+    width: auto;
+}
+
+#name-input.invalid {
+    /* content: '✖'; */
+    background: rgba(139, 0, 0, 0.685)
+}
+
+#email-input.invalid {
+    /* content: '✖'; */
+    background: rgba(139, 0, 0, 0.685)
+}

@@ -1,5 +1,5 @@
 import React from 'react'
-import path from 'path'
+
 
 class Signin extends React.Component {
     constructor(props) {
@@ -18,12 +18,36 @@ class Signin extends React.Component {
         this.setState({signInPass: event.target.value})
     }
 
+    saveAuthTokenInSession = (token) => {
+        window.sessionStorage.setItem('token', token)
+    }
+
+    fetchUserProfile = (id, token) => {
+        fetch(process.env.REACT_APP_LOCALHOST + `/api/profile/${id}`, {
+            method: 'get',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token    
+            }
+        })
+        .then(resp => resp.json())
+        .then(user => {
+            console.log("BEFORE LOAD USER: ",user)
+            this.props.loadUser(user)
+            this.props.onRouteChange('home')
+        })
+        .catch(err => {
+            console.log(err)
+            alert('Oops, something went wrong.')
+        })
+    }
+
     onSubmitSignIn = () => {
 
         if (!this.state.signInPass || !this.state.signInLogin) {
             alert('Please enter your Login and Password.')
         } else {
-            fetch('https://smart-brain-full.herokuapp.com/api/signin', {
+            fetch(process.env.REACT_APP_LOCALHOST + '/api/signin', {
                 method: 'post',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
@@ -32,13 +56,16 @@ class Signin extends React.Component {
                 })
             })
             .then(response => response.json())
-            .then(user => {
-                if (user.id) {
-                    this.props.onRouteChange('home')
-                    this.props.loadUser(user)
+            .then(data => {
+                if (data.token.length && data.status === "success") {
+                    this.saveAuthTokenInSession(data.token)
+                    this.fetchUserProfile(data.userId, data.token)
                 } else {
-                    alert('Login/password mismatch!')
-                }
+                    throw('Unable to sign in.')
+            }})
+            .catch(err => {
+                console.log(err)
+                alert('Oops, something went wrong.')
             })
         }
     }
@@ -63,7 +90,7 @@ class Signin extends React.Component {
                             <div className="mv3">
                                 <label className="code db fw6 lh-copy f5" htmlFor="password">Password</label>
                                 <input 
-                                    className="b--black white b pa2 input-reset ba bg-transparent w-100 hover-bg-black hover-white" 
+                                    className="b--black white pa2 input-reset ba bg-transparent w-100 hover-bg-black hover-white" 
                                     onChange={this.onPassChange} 
                                     type="password" 
                                     name="password"  

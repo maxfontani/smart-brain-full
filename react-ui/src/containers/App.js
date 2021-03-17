@@ -5,6 +5,7 @@ import Signin from '../components/Signin/Signin'
 import Register from '../components/Register/Register'
 import ImageLinkForm from '../components/ImageLinkForm/ImageLinkForm'
 import FaceRecognition from '../components/FaceRecognition/FaceRecognition'
+import Profile from '../components/Profile/Profile'
 import Particles from 'react-particles-js'
 import './App.css'
 import 'tachyons'
@@ -48,12 +49,15 @@ const initialState = {
   boxes: [],
   route: 'signin',
   facesDetected: 0,
+  isProfileOpen: false,
   user: {
     id: 0,
     login: '',
+    name: '',
     email: '',
     entries: 0,
-    joined: ''
+    joined: '',
+    birthday: ''
   }
 }
 
@@ -70,7 +74,50 @@ class App extends React.Component {
     this.state = initialState
   }
 
+  componentDidMount() {
+
+    console.log('APP DID MOUNT')
+
+    const token = window.sessionStorage.getItem('token')
+
+    setTimeout(() => {
+      if (token) { 
+        fetch(process.env.REACT_APP_LOCALHOST + '/api/signin',{
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.login && data.id) {
+            fetch(process.env.REACT_APP_LOCALHOST + `/api/profile/${data.id}`, {
+              method: 'get',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token    
+              }})
+              .then(resp => resp.json())
+              .then(user => {
+                if (Object.keys(user).length && user.id) {
+                  this.loadUser(user)
+                  this.onRouteChange('home')
+                } else {
+                    console.warn('Could not load user profile.')
+                }})
+          } else {
+            console.warn('Could not fetch user profile.')
+          }
+        })
+      } else {
+        console.warn('Token not verified.')
+      }
+    }, 300)
+  }
+
   calcFaceLocation = (data) => {
+    if (data.outputs) {
     const facesArr = data.outputs[0].data.regions.map(region => region.region_info.bounding_box)
     const image = document.getElementById('input-image')
     const width = Number(image.width)
@@ -84,10 +131,13 @@ class App extends React.Component {
       })
       this.setState({facesDetected: facesArr.length})
       return facesArr
+    } else {
+        alert('Your session may have expired')
+    }
   }
 
   displayFaceBox = (boxArr) => {
-    this.setState({boxes: boxArr})
+    boxArr && this.setState({boxes: boxArr})
   }
 
   onInputChange = (event) => {
@@ -96,18 +146,24 @@ class App extends React.Component {
 
   onSubmit = (event) => {
     this.setState({inputUrl: this.state.input})
-    fetch('https://smart-brain-full.herokuapp.com/api/imageurl', {
+    fetch(process.env.REACT_APP_LOCALHOST + '/api/imageurl', {
       method: 'post',
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': window.sessionStorage.getItem('token')
+      },
       body: JSON.stringify({
         inputUrl: this.state.input
       })
     })
     .then(response => response.json())
     .then(response => {
-      fetch('https://smart-brain-full.herokuapp.com/api/image', {
+      fetch(process.env.REACT_APP_LOCALHOST + '/api/image', {
         method: 'put',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': window.sessionStorage.getItem('token')
+        },
         body: JSON.stringify({
             id: this.state.user.id
         })
@@ -142,7 +198,9 @@ class App extends React.Component {
       login: data.login,
       email: data.email,
       entries: data.entries,
-      joined: data.joined
+      joined: data.joined,
+      birthday: data.birthday && data.birthday.slice(0,10),
+      name: data.name
     }})
   }
 
@@ -154,6 +212,10 @@ class App extends React.Component {
     this.setState(initialSearchState)
   }
 
+  toggleProfile = () => {
+    this.setState(() => ({isProfileOpen : !this.state.isProfileOpen}))
+  }
+
   renderScreen = () => {
     switch(this.state.route) {
       case 'signin':
@@ -162,11 +224,12 @@ class App extends React.Component {
         return <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
       case 'home':
         return ( 
-          <div>
-            <Navigation onRouteChange={this.onRouteChange} resetState={this.resetState} userName={this.state.user.login} entries={this.state.user.entries} /> 
-            <Logo onSubmit={this.onSubmit} />
-            <ImageLinkForm onInputChange={this.onInputChange} facesDetected={this.state.facesDetected} />
-            <FaceRecognition inputUrl={this.state.inputUrl} boxes={this.state.boxes} /> 
+          <div className="flex-column">
+            <Navigation onRouteChange={this.onRouteChange} resetState={this.resetState} user={this.state.user} isProfileOpen={this.state.isProfileOpen} toggleProfile={this.toggleProfile}/>
+            <Logo className="relative z-2" onSubmit={this.onSubmit} />
+            {this.state.isProfileOpen && <Profile className="relative z-999" user={this.state.user} isProfileOpen={this.state.isProfileOpen} toggleProfile={this.toggleProfile} loadUser={this.loadUser} />} 
+            <ImageLinkForm className="relative z-2" onInputChange={this.onInputChange} facesDetected={this.state.facesDetected} />
+            <FaceRecognition className="relative z-2" inputUrl={this.state.inputUrl} boxes={this.state.boxes} /> 
           </div>
         )
       default: 
@@ -177,7 +240,7 @@ class App extends React.Component {
   render() {
     return(
       <div className="App">
-        <Particles className='particles z-1' params={particlesParams}/>
+        <Particles className='particles z-0' params={particlesParams}/>
         {this.renderScreen()}
       </div>
     )

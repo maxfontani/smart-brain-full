@@ -24,7 +24,7 @@ const FaceRecognition = ({inputUrl, boxes}) => {
             return (
                 <div className='mw9 center'>
                     <div className='absolute mt2'>
-                        <img id ='input-image' className='z-2' alt='' src={inputUrl}/>
+                        <img id ='input-image' alt='' src={inputUrl}/>
                     </div>
                 </div>
             )

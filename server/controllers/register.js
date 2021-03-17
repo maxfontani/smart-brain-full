@@ -1,12 +1,14 @@
+import createSession from './jwtFns.js'
+
 function handleRegister(req,res,db,bcrypt) {
-    const {email, login, password} = req.body
+    const { email, login, password } = req.body
 
     if (!email || !login || !password) {
         return res.status(400).json('incorrect form submission')
     }
 
     function loginUnique() {
-        return db.select('id').from('users').where({login})
+        return db.select('id').from('users').where({ login })
             .then(data => data.length)                  
     }
 
@@ -33,18 +35,23 @@ function handleRegister(req,res,db,bcrypt) {
                 return trx('users')
                     .returning('*')
                     .insert({
-                    email: email,
-                    login: newLogin[0],
-                    joined: new Date()
+                        email: email,
+                        login: newLogin[0],
+                        joined: new Date(),
                     })
                     .then(user => {
-                    res.json(user[0]);
+                    const { token } = createSession(user[0])
+                    res.status(200).json({user: user[0], token});
                     })
                 })
                 .then(trx.commit)
                 .catch(trx.rollback)
             })
-            .catch(err => res.status(400).json('unable to register'))
+            .catch(err => {
+                console.log('REG TOK:', token)
+                console.log('REG ERR:', err)
+                res.status(400).json('Unable to register.')
+            })
         }
 
     loginUnique().then(data => condChain(data))  

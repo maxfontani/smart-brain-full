@@ -37,7 +37,7 @@ class Register extends React.Component {
             if (!this.emailCheck(this.state.newEmail)) {
                 alert('Invalid e-mail address.')
             } else {
-                fetch('https://smart-brain-full.herokuapp.com/api/register', {
+                fetch(process.env.REACT_APP_LOCALHOST + '/api/register', {
                     method: 'post',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
@@ -46,9 +46,10 @@ class Register extends React.Component {
                         login: this.state.newLogin
                     })
                 }).then(response => response.json())
-                .then(user => {
-                    if (user.login) {
-                        this.props.loadUser(user)
+                .then(data => {
+                    if (data.user.login) {
+                        window.sessionStorage.setItem('token', data.token)
+                        this.props.loadUser(data.user)
                         this.props.onRouteChange('home')
                     } else {
                         alert('Registration failed. Try another login/password.')
@@ -91,7 +92,7 @@ class Register extends React.Component {
                             <label className="code db fw6 lh-copy f5" htmlFor="password">Password</label>
                             <input
                                 onChange={this.onPassChange} 
-                                className="b--black b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                                className="b--black pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
                                 type="password" 
                                 name="password"  
                                 id="password"/>
