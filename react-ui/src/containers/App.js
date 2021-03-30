@@ -1,6 +1,5 @@
 import React from 'react'
 import Navigation from '../components/Navigation/Navigation'
-import Logo from '../components/Logo/Logo'
 import Signin from '../components/Signin/Signin'
 import Register from '../components/Register/Register'
 import ImageLinkForm from '../components/ImageLinkForm/ImageLinkForm'
@@ -11,9 +10,9 @@ import './App.css'
 import 'tachyons'
 
 const particlesParams = {
-  fpsLimit: 60,
+  fpsLimit: 30,
   interactivity: {
-    detectsOn: "canvas",
+    detectsOn: "window",
     events: {
       onClick: {
         enable: true,
@@ -34,10 +33,10 @@ const particlesParams = {
   },
     particles: {
     number: {
-      value: 90,
+      value: 80,
         density: {
           enabled: true,
-          value_area: 100
+          value_area: 200
         }
     }
   }
@@ -92,7 +91,7 @@ class App extends React.Component {
         .then(res => res.json())
         .then(data => {
           if (data.login && data.id) {
-            fetch(process.env.REACT_APP_LOCALHOST + `/api/profile/${data.id}`, {
+            fetch(process.env.REACT_APP_LOCALHOST +`/api/profile/${data.id}`, {
               method: 'get',
               headers: {
                 'Content-Type': 'application/json',
@@ -141,6 +140,7 @@ class App extends React.Component {
   }
 
   onInputChange = (event) => {
+    console.log('CHANGE@ ', event.target.value)
     this.setState({input:event.target.value})
   }
 
@@ -224,12 +224,11 @@ class App extends React.Component {
         return <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
       case 'home':
         return ( 
-          <div className="flex-column">
-            <Navigation onRouteChange={this.onRouteChange} resetState={this.resetState} user={this.state.user} isProfileOpen={this.state.isProfileOpen} toggleProfile={this.toggleProfile}/>
-            <Logo className="relative z-2" onSubmit={this.onSubmit} />
-            {this.state.isProfileOpen && <Profile className="relative z-999" user={this.state.user} isProfileOpen={this.state.isProfileOpen} toggleProfile={this.toggleProfile} loadUser={this.loadUser} />} 
-            <ImageLinkForm className="relative z-2" onInputChange={this.onInputChange} facesDetected={this.state.facesDetected} />
-            <FaceRecognition className="relative z-2" inputUrl={this.state.inputUrl} boxes={this.state.boxes} /> 
+          <div className="alsolute flex-column z-1">
+            <Navigation onRouteChange={this.onRouteChange} resetState={this.resetState} user={this.state.user} isProfileOpen={this.state.isProfileOpen} toggleProfile={this.toggleProfile} onSubmit={this.onSubmit}/>    
+            {this.state.isProfileOpen && <Profile user={this.state.user} isProfileOpen={this.state.isProfileOpen} toggleProfile={this.toggleProfile} loadUser={this.loadUser} />} 
+            <ImageLinkForm onInputChange={this.onInputChange} facesDetected={this.state.facesDetected} />
+            <FaceRecognition inputUrl={this.state.inputUrl} boxes={this.state.boxes} /> 
           </div>
         )
       default: 
@@ -240,7 +239,7 @@ class App extends React.Component {
   render() {
     return(
       <div className="App">
-        <Particles className='particles z-0' params={particlesParams}/>
+        <Particles className='particles absolute z-0' params={particlesParams}/>
         {this.renderScreen()}
       </div>
     )

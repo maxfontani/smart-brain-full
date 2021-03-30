@@ -95,7 +95,7 @@ const Profile = ({isProfileOpen, toggleProfile, loadUser, user}) => {
 
     return ( 
         <DialogOverlay        
-            className="flex flex-column "
+            className="flex flex-column z-3"
             isOpen={isProfileOpen}        
             onDismiss={() => toggleProfile()}
         >   
@@ -144,6 +144,7 @@ const Profile = ({isProfileOpen, toggleProfile, loadUser, user}) => {
                                 max={new Date().toISOString().slice(0,10)}
                                 name="birthday"
                                 value={birthday}
+                                onKeyDown={e => e.preventDefault()}
                                 onChange={onBirthdayChange}
                                 />
                         </div>

@@ -3,12 +3,12 @@ import React from 'react'
 const FaceRecognition = ({inputUrl, boxes}) => {
     if (boxes.length) {
         return (
-            <div className='mw9 center'>
-                <div className='absolute pb4 z-2'>
-                    <img id ='input-image' className='shadow-5 z-2' alt='' src={inputUrl}/>
+            <div className='mw9 center '>
+                <div className='absolute pb4 z-1'>
+                    <img id ='input-image' className='shadow-5 z-1' alt='' src={inputUrl}/>
                         {boxes.map((box, i) => {
                             return ( 
-                                <div key = {i} className='bounding-box z-3' style={{
+                                <div key = {i} className='bounding-box z-2' style={{
                                     top: box.topRow, 
                                     bottom: box.bottomRow, 
                                     left: box.leftCol, 

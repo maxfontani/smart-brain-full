@@ -4,8 +4,7 @@ function handleApiCall(req,res) {
     const { inputUrl } = req.body
 
     const app = new Clarifai.App({
-        // apiKey: process.env.API_KEY
-        apiKey: "9b00d788e4bf4ab39118986114a98924"
+        apiKey: process.env.API_KEY
     });
     
     const model = {
