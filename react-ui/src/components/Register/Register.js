@@ -37,7 +37,7 @@ class Register extends React.Component {
             if (!this.emailCheck(this.state.newEmail)) {
                 alert('Invalid e-mail address.')
             } else {
-                fetch(process.env.REACT_APP_LOCALHOST + '/api/register', {
+                fetch('/api/register', {
                     method: 'post',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({

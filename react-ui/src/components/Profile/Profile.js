@@ -25,8 +25,6 @@ const Profile = ({isProfileOpen, toggleProfile, loadUser, user}) => {
         {'invalid': !emailCheck(email)}
     )
 
-    console.log('Signed in user: ', user)
-
     function onNameChange(event) {
         setnameChanged(true)
         setName(event.target.value)
@@ -72,7 +70,7 @@ const Profile = ({isProfileOpen, toggleProfile, loadUser, user}) => {
         
         const filteredData = Object.fromEntries(savedData.filter(k => k[1] !== false))
 
-        fetch(process.env.REACT_APP_LOCALHOST + `/api/profile/${user.id}`, {
+        fetch(`/api/profile/${user.id}`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
@@ -80,7 +78,6 @@ const Profile = ({isProfileOpen, toggleProfile, loadUser, user}) => {
             },
             body: JSON.stringify(filteredData)
         }).then(response => {
-                console.log(response)
                 if (response.status === 200 || response.status === 304) {
                     loadUser({...user, ...filteredData})
                     toggleProfile()
@@ -160,6 +157,9 @@ const Profile = ({isProfileOpen, toggleProfile, loadUser, user}) => {
                                 className="shadow-1 w-40 b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f5 hover-bg-black hover-white" 
                                 type="submit" 
                                 value="Cancel"/>
+                        </div>
+                        <div className="gravatar ma2">
+                            <p>* Manage your avatar using <a href="https://gravatar.com/" target="_blank" rel="noopener">Gravatar</a></p>
                         </div>
                     </fieldset>
             </DialogContent>

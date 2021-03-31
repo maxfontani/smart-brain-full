@@ -75,13 +75,11 @@ class App extends React.Component {
 
   componentDidMount() {
 
-    console.log('APP DID MOUNT')
-
     const token = window.sessionStorage.getItem('token')
 
     setTimeout(() => {
       if (token) { 
-        fetch(process.env.REACT_APP_LOCALHOST + '/api/signin',{
+        fetch('/api/signin',{
           method: 'post',
           headers: {
             'Content-Type': 'application/json',
@@ -91,7 +89,7 @@ class App extends React.Component {
         .then(res => res.json())
         .then(data => {
           if (data.login && data.id) {
-            fetch(process.env.REACT_APP_LOCALHOST +`/api/profile/${data.id}`, {
+            fetch(`/api/profile/${data.id}`, {
               method: 'get',
               headers: {
                 'Content-Type': 'application/json',
@@ -131,7 +129,7 @@ class App extends React.Component {
       this.setState({facesDetected: facesArr.length})
       return facesArr
     } else {
-        alert('Your session may have expired')
+        alert('The image URL may not be valid')
     }
   }
 
@@ -140,13 +138,12 @@ class App extends React.Component {
   }
 
   onInputChange = (event) => {
-    console.log('CHANGE@ ', event.target.value)
     this.setState({input:event.target.value})
   }
 
   onSubmit = (event) => {
     this.setState({inputUrl: this.state.input})
-    fetch(process.env.REACT_APP_LOCALHOST + '/api/imageurl', {
+    fetch('/api/imageurl', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -158,7 +155,7 @@ class App extends React.Component {
     })
     .then(response => response.json())
     .then(response => {
-      fetch(process.env.REACT_APP_LOCALHOST + '/api/image', {
+      fetch('/api/image', {
         method: 'put',
         headers: {
           'Content-Type': 'application/json',

@@ -1,9 +1,0 @@
-@media all and (max-width: 460px)  {
-    .nav-inner {
-        justify-content: space-around;
-    }
-
-    .profile-icon {
-        position: relative;
-    }
-}

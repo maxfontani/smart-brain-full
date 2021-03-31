@@ -23,7 +23,7 @@ class Signin extends React.Component {
     }
 
     fetchUserProfile = (id, token) => {
-        fetch(process.env.REACT_APP_LOCALHOST + `/api/profile/${id}`, {
+        fetch(`/api/profile/${id}`, {
             method: 'get',
             headers: {
               'Content-Type': 'application/json',
@@ -32,7 +32,6 @@ class Signin extends React.Component {
         })
         .then(resp => resp.json())
         .then(user => {
-            console.log("BEFORE LOAD USER: ",user)
             this.props.loadUser(user)
             this.props.onRouteChange('home')
         })
@@ -47,7 +46,7 @@ class Signin extends React.Component {
         if (!this.state.signInPass || !this.state.signInLogin) {
             alert('Please enter your Login and Password.')
         } else {
-            fetch(process.env.REACT_APP_LOCALHOST + '/api/signin', {
+            fetch('/api/signin', {
                 method: 'post',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({

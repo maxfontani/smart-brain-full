@@ -4,15 +4,10 @@
   width: 100vw;
 }
 
-@media all and (max-width: 640px)  {
-  .particles {
-    display: none;
-  }
-}
-
 nav {
   display: flex;
   justify-content: flex-end;
+  width: 100%;
   padding: 20px;
 }
 
@@ -81,3 +76,35 @@ input:invalid {
   box-shadow: none;
 }
 
+.profile-icon {
+  position: absolute;
+  top: 25px;
+  right: 25px; 
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* @media all and (min-width: 460px) and (max-width: 768px)  {
+  .profile-icon {
+    top: 15px;
+    right: 15px; 
+  }
+} */
+
+@media all and (max-width: 460px)  {
+  .particles {
+    display: none;
+  }
+  nav {
+    margin-bottom: 0;
+  }
+
+  .nav-inner {
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+}

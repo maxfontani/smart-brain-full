@@ -10,8 +10,8 @@ const ImageLinkForm = ({onInputChange, facesDetected}) => {
     return (
         <div className='z-3'>
             {facesDetected
-                ? <p className='f2 white code'>Smart Brain has detected {facesDetected} face{manyFaces ? 's' : ''} in your image</p> 
-                : <p className='f2 code'>Smart Brain will detect faces in your image</p>                 
+                ? <p className='f2 white mt2 code'>Smart Brain has detected {facesDetected} face{manyFaces ? 's' : ''} in your image</p> 
+                : <p className='f2 mt2 code'>Smart Brain will detect faces in your image</p>                 
             }
             <p className='f3 code'>1. Enter image URL</p>
             <p className='f3 code'>2. Click on the Smart Brain</p>

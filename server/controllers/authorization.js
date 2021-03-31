@@ -16,7 +16,6 @@ const requireAuth = (req, res, next) => {
             return res.status(401).json('Unauthorized code 2')
         }})
 
-    console.log('YOU SHALL PAAASSS!!!')
     return next()
 }
 

@@ -48,8 +48,6 @@ function handleRegister(req,res,db,bcrypt) {
                 .catch(trx.rollback)
             })
             .catch(err => {
-                console.log('REG TOK:', token)
-                console.log('REG ERR:', err)
                 res.status(400).json('Unable to register.')
             })
         }

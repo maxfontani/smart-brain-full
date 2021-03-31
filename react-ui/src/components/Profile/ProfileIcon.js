@@ -1,24 +1,28 @@
-import React from 'react'
-
-import {  Menu,  
+import React, { useState } from 'react'
+import { Menu,  
     MenuList,  
     MenuButton,  
-    MenuItem,  
-    MenuLink } 
+    MenuItem } 
 from "@reach/menu-button"
+import md5 from 'md5'
 
+import defProfileIcon from './profile-icon.png'
 import "@reach/menu-button/styles.css"
-import profileIcon from './profile-icon.png'
 import "./ProfileIcon.css"
 
-export const ProfileIcon = ({onRouteChange, toggleProfile}) => {
+export const ProfileIcon = ({onRouteChange, toggleProfile, user }) => {
+
+    // const [gravatarUrl, setGravatarUrl] = useState('')
+    const userEmailHash = md5(user.email.trim().toLowerCase()) || ''
+    const gravatarUrl = 'https://www.gravatar.com/avatar/' + userEmailHash +'?d=https%3A%2F%2Fi.ibb.co%2FTYzSQjQ%2Fprofile-icon.png&s=105'
+    // fetch('https://www.gravatar.com/avatar/' + userEmailHash)
 
     return (
-        // <div className="profile-icon absolute top-0 right-0 z-3">
             <Menu> 
                 <MenuButton className="bg-transparent b--transparent pb2" aria-expanded="false">                     
                     <img id='menu-button'
-                    src={profileIcon}
+                    src={gravatarUrl}
+                    defaultValue={defProfileIcon}
                     className="b--transparent shadow-5 br-100 h3 w3 grow-large" alt="ava" />   
                 </MenuButton>      
                 <MenuList>        
@@ -34,6 +38,5 @@ export const ProfileIcon = ({onRouteChange, toggleProfile}) => {
                     </MenuItem>      
                 </MenuList>    
             </Menu>
-        // </div>
     )
 }

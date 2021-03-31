@@ -17,8 +17,6 @@ export function handleProfileGet(req, res, db) {
 
 export function handleProfileUpdate(req, res, db) {
     const { id } = req.params
-    // const { name, email, birthday } = req.body
-    console.log("REQ BODY: ", req.body) 
 
     if (Object.keys(req.body).length) {
         db('users')

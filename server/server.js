@@ -1,6 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config({ silent: process.env.NODE_ENV === 'production' });
-
 import express from 'express'
 import bcrypt from 'bcryptjs'
 import cors from 'cors'
@@ -14,19 +11,16 @@ import { fileURLToPath } from 'url'
 import requireAuth from './controllers/authorization.js'
 
 const __filename = fileURLToPath(import.meta.url)
-console.log(__filename)
 const __dirname = path.dirname(__filename)
-console.log(__dirname)
 
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 1
 
 const app = express()
 const db = knex({
     client: 'pg',
     connection: {
         connectionString: process.env.DATABASE_URL,
-        // ssl: true
-        ssl: false
+        ssl: true
     }
 })
 
