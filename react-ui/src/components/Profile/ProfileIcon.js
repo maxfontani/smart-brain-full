@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Menu,  
     MenuList,  
     MenuButton,  
@@ -12,10 +12,8 @@ import "./ProfileIcon.css"
 
 export const ProfileIcon = ({onRouteChange, toggleProfile, user }) => {
 
-    // const [gravatarUrl, setGravatarUrl] = useState('')
     const userEmailHash = md5(user.email.trim().toLowerCase()) || ''
     const gravatarUrl = 'https://www.gravatar.com/avatar/' + userEmailHash +'?d=https%3A%2F%2Fi.ibb.co%2FTYzSQjQ%2Fprofile-icon.png&s=105'
-    // fetch('https://www.gravatar.com/avatar/' + userEmailHash)
 
     return (
             <Menu> 
