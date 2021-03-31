@@ -13,7 +13,7 @@ import requireAuth from './controllers/authorization.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 1
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
 
 const app = express()
 const db = knex({
